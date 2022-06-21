@@ -128,7 +128,12 @@ namespace Compiler
                     using (FileStream asmStreamOut = File.Open(finalAssemblyFilePath, FileMode.Create))
                     using (FileStream pdbStreamOut = File.Open(finalAssemblyPdbFilePath, FileMode.Create))
                     {
+                        // Copy Assembly contents
+                        asmStream.Seek(0, SeekOrigin.Begin);
                         asmStream.CopyTo(asmStreamOut);
+
+                        // Copy Debug contents
+                        pdbStream.Seek(0, SeekOrigin.Begin);
                         pdbStream.CopyTo(pdbStreamOut);
                     }
                 }
