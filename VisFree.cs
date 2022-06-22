@@ -93,6 +93,7 @@ namespace Compiler
                 compilationOptions);
 
             // Start compilation
+            EmitResult compileResults = null;
             string finalAssemblyFilePath = args[0];
             string finalAssemblyPdbFilePath = Path.ChangeExtension(args[0], ".pdb");
             Console.WriteLine($"Saving assembly to {finalAssemblyFilePath}...");
@@ -106,7 +107,7 @@ namespace Compiler
                     pdbFilePath: finalAssemblyPdbFilePath);
 
                 var embeddedTexts = GetAllEmbeddedTexts(args, firstRef).ToList();
-                var compileResults = compilation.Emit(                                                                                        
+                compileResults = compilation.Emit(                                                                                        
                     peStream: asmStream,
                     pdbStream: pdbStream,
                     xmlDocumentationStream: null,
@@ -143,7 +144,7 @@ namespace Compiler
                 Console.Out.WriteLine(e.ToString());
             }
 
-            return 0;
+            return (compileResults != null && compileResults.Success) ? 0 : 1;
         }
     }
 }
